@@ -13,12 +13,17 @@ contract ProbablySomething is ERC721, Ownable {
     // how centralized are we?
     string public baseURI;
 
-    uint256 public constant MAX_SUPPLY = 10_000;
-    uint256 public constant PRICE = 0.04 ether;
+    uint256 public MAX_SUPPLY;
+    uint256 public PRICE;
 
     uint16 internal _totalSupply;
 
-    constructor() ERC721("ProbablyNothing", "PROBSNOT") {}
+    constructor(uint256 max, uint256 price)
+        ERC721("ProbablyNothing", "PROBSNOT")
+    {
+        MAX_SUPPLY = max;
+        PRICE = price;
+    }
 
     // @dev throw unless provenance set
     modifier whenProvincial() {
@@ -32,7 +37,7 @@ contract ProbablySomething is ERC721, Ownable {
     }
 
     function mint(uint256 num) public payable whenProvincial {
-        require(num > 0 && num < 2, "Invalid amount");
+        require(num > 0 && num < 3, "Invalid amount");
         require(_totalSupply + num <= MAX_SUPPLY, "Exceeds max supply");
         require(PRICE * num == msg.value, "Invalid value");
 
