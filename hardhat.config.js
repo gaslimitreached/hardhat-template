@@ -3,12 +3,10 @@ require('@nomiclabs/hardhat-ethers');
 require('@nomiclabs/hardhat-etherscan');
 require('hardhat-gas-reporter');
 require('solidity-coverage');
+require('hardhat-deploy');
+require('hardhat-tracer');
 
-
-// You need to export an object to set up your config
-// Go to https://hardhat.org/config/ to learn more
 module.exports = {
-  // defaultNetwork: "hardhat",
   defaultNetwork: 'hardhat',
   networks: {
     hardhat: { chainId: 1337 },
@@ -18,7 +16,7 @@ module.exports = {
     settings: {
       optimizer: {
         enabled: true,
-        runs: 10000,
+        runs: 1,
       },
     },
   },
@@ -26,5 +24,10 @@ module.exports = {
     currency: 'USD',
     gasPrice: '100',
     coinmarketcap: process.env.CMC_KEY
+  },
+  namedAccounts: {
+    deployer: {
+      default: 0, // take first account as deployer
+    }
   }
 };

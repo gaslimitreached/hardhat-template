@@ -1,24 +1,25 @@
 {
-  "name": "muse",
-  "version": "0.1.0",
-  "private": true,
+  "name": "wgmi",
+  "version": "0.0.1",
+  "main": "index.js",
   "scripts": {
+    "compile": "npx hardhat compile",
     "test:hardhat": "npx hardhat test",
     "test:cov": "npx hardhat coverage",
     "test": "npm run test:cov"
-  },
-  "dependencies": {
-    "@openzeppelin/contracts": "^4.3.2"
   },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.0",
     "@nomiclabs/hardhat-etherscan": "^2.1.7",
     "@nomiclabs/hardhat-waffle": "^2.0.0",
+    "@openzeppelin/contracts": "^4.3.2",
     "chai": "^4.2.0",
     "ethereum-waffle": "^3.0.0",
     "ethers": "^5.0.0",
     "hardhat": "^2.6.4",
+    "hardhat-deploy": "^0.9.14",
     "hardhat-gas-reporter": "^1.0.4",
+    "hardhat-tracer": "^1.0.0-alpha.6",
     "solhint": "^3.3.6",
     "solidity-coverage": "^0.7.17"
   }
