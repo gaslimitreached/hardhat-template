@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "main": "index.js",
   "scripts": {
+    "lint": "solhint 'contracts/**/*.sol'",
     "compile": "npx hardhat compile",
     "test:hardhat": "npx hardhat test",
     "test:cov": "npx hardhat coverage",
