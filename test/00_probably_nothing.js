@@ -28,7 +28,7 @@ describe('ProbablyNothing', function () {
 
   it('allows setting provenance', async () => {
     await contract.connect(deployer).setProvenance('something');
-    const provenance = await contract.PROVENANCE();
+    const provenance = await contract.provenance();
     expect(provenance.length).gt(0);
   });
 
