@@ -1,34 +1,32 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.10;
+pragma solidity ^0.8.9;
 
-import '@openzeppelin/contracts/token/ERC721/ERC721.sol';
-import '@openzeppelin/contracts/access/Ownable.sol';
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
 /// @dev This is an example ERC721 contract
 contract ProbablyNothing is ERC721, Ownable {
     using Address for address;
 
-    // pudding
-    string public PROVENANCE;
+    string public provenance;
 
-    // how centralized are we?
     string public baseURI;
 
-    uint256 public MAX_SUPPLY;
-    uint256 public PRICE;
+    uint256 public max;
+    uint256 public price;
 
-    uint256 internal _totalSupply;
+    uint256 internal supply;
 
-    constructor(uint256 max, uint256 price)
-        ERC721('ProbablyNothing', 'PROBSNOT')
+    constructor(uint256 _max, uint256 _price)
+        ERC721("ProbablyNothing", "PROBSNOT")
     {
-        MAX_SUPPLY = max;
-        PRICE = price;
+        max = _max;
+        price = _price;
     }
 
     /// @dev prevents action unless provenance hash is set
     modifier whenProvincial() {
-        require(bytes(PROVENANCE).length > 0, 'Provenance not set');
+        require(bytes(provenance).length > 0, "Provenance not set");
         _;
     }
 
@@ -42,28 +40,28 @@ contract ProbablyNothing is ERC721, Ownable {
     /// @dev Mint a token
     /// @param num number of tokens to mint
     function mint(uint256 num) public payable whenProvincial {
-        require(num > 0 && num < 3, 'Invalid amount');
-        require(_totalSupply + num <= MAX_SUPPLY, 'Exceeds max supply');
-        require(PRICE * num == msg.value, 'Invalid value');
+        require(num > 0 && num < 3, "Invalid amount");
+        require(supply + num <= max, "Exceeds max supply");
+        require(price * num == msg.value, "Invalid value");
 
         for (uint256 i; i < num; i++) {
-            _totalSupply++;
-            _safeMint(msg.sender, _totalSupply);
+            supply++;
+            _safeMint(msg.sender, supply);
         }
     }
 
     /// @dev Set the provenance hash for the collection
-    /// @param provenance string value of hashed assets
-    function setProvenance(string memory provenance) public onlyOwner {
+    /// @param _provenance string value of hashed assets
+    function setProvenance(string memory _provenance) public onlyOwner {
         // TODO: bytes32 this?
-        require(bytes(PROVENANCE).length == 0, 'Provenance set');
-        PROVENANCE = provenance;
+        require(bytes(provenance).length == 0, "Provenance set");
+        provenance = _provenance;
     }
 
     /// @dev One-time set base URI of token
     /// @param uri string value of base uri
     function setBaseURI(string memory uri) public onlyOwner {
-        require(bytes(baseURI).length < 1, 'Already set');
+        require(bytes(baseURI).length < 1, "Already set");
         baseURI = uri;
     }
 
@@ -77,7 +75,7 @@ contract ProbablyNothing is ERC721, Ownable {
         override(ERC721)
         returns (string memory)
     {
-        return string(abi.encodePacked(super.tokenURI(tokenId), '.json'));
+        return string(abi.encodePacked(super.tokenURI(tokenId), ".json"));
     }
 
     function totalSupply() public view returns (uint256) {
