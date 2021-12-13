@@ -2,6 +2,7 @@
   "name": "wgmi",
   "version": "0.0.1",
   "main": "index.js",
+  "license" : "MIT",
   "scripts": {
     "lint": "solhint 'contracts/**/*.sol'",
     "compile": "npx hardhat compile",
