@@ -8,7 +8,8 @@
     "compile": "npx hardhat compile",
     "test:hardhat": "npx hardhat test",
     "test:cov": "npx hardhat coverage",
-    "test": "npm run test:cov"
+    "test": "npm run test:cov",
+    "gas": "npm run test:hardhat"
   },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.0",
