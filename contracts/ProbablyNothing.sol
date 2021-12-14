@@ -4,6 +4,20 @@ pragma solidity ^0.8.9;
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
+/// @notice Custom Errors
+/// @dev attempted to set baseURI after already being set.
+error BaseUriAlreadySet();
+/// @dev attempted to mint more than allowed.
+error InvalidAmount();
+/// @dev message value is not price * num.
+error InvalidValue();
+/// @dev attempted to mint more than the maximum supply.
+error MaxSupplyExceeded();
+/// @dev attempted action before provenance hash has been set.
+error ProvenanceNotSet();
+/// @dev attempted to set provenance hash after already being set.
+error ProvenanceAlreadySet();
+
 /// @dev This is an example ERC721 contract
 contract ProbablyNothing is ERC721, Ownable {
     using Address for address;
@@ -24,25 +38,19 @@ contract ProbablyNothing is ERC721, Ownable {
         price = _price;
     }
 
-    /// @dev prevents action unless provenance hash is set
-    modifier whenProvincial() {
-        require(bytes(provenance).length > 0, "Provenance not set");
-        _;
-    }
-
     /// @dev releases the balance of the contract to the owner
     function release() public onlyOwner {
         uint256 balance = address(this).balance;
-        // TODO: require success status
         payable(owner()).transfer(balance);
     }
 
     /// @dev Mint a token
     /// @param num number of tokens to mint
-    function mint(uint256 num) public payable whenProvincial {
-        require(num > 0 && num < 3, "Invalid amount");
-        require(supply + num <= max, "Exceeds max supply");
-        require(price * num == msg.value, "Invalid value");
+    function mint(uint256 num) public payable {
+        if (bytes(provenance).length == 0) revert ProvenanceNotSet();
+        if (num > 2 || num < 1) revert InvalidAmount();
+        if (price * num != msg.value) revert InvalidValue();
+        if (supply + num > max) revert MaxSupplyExceeded();
 
         for (uint256 i; i < num; i++) {
             supply++;
@@ -53,15 +61,14 @@ contract ProbablyNothing is ERC721, Ownable {
     /// @dev Set the provenance hash for the collection
     /// @param _provenance string value of hashed assets
     function setProvenance(string memory _provenance) public onlyOwner {
-        // TODO: bytes32 this?
-        require(bytes(provenance).length == 0, "Provenance set");
+        if (bytes(provenance).length > 0) revert ProvenanceAlreadySet();
         provenance = _provenance;
     }
 
     /// @dev One-time set base URI of token
     /// @param uri string value of base uri
     function setBaseURI(string memory uri) public onlyOwner {
-        require(bytes(baseURI).length < 1, "Already set");
+        if (bytes(baseURI).length > 1) revert BaseUriAlreadySet();
         baseURI = uri;
     }
 

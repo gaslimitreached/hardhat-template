@@ -23,7 +23,7 @@ describe('ProbablyNothing', function () {
         .connect(buyer)
         .mint(1, { value: ethers.utils.parseEther('0.04') });
 
-    await expect(tx).to.be.revertedWith('Provenance not set');
+    await expect(tx).to.be.revertedWith('ProvenanceNotSet');
   });
 
   it('allows setting provenance', async () => {
@@ -35,7 +35,7 @@ describe('ProbablyNothing', function () {
   it('does not allow setting provenance more than once', async () => {
     await contract.connect(deployer).setProvenance('something');
     const tx = contract.connect(deployer).setProvenance('something-else');
-    expect(tx).to.be.revertedWith('Provenance set');
+    expect(tx).to.be.revertedWith('ProvenanceAlreadySet');
   });
 
   it('mints a single token', async () => {
@@ -51,9 +51,9 @@ describe('ProbablyNothing', function () {
     await contract.connect(deployer).setProvenance('something');
     const tx = contract
       .connect(buyer)
-      .mint(3, { value: ethers.utils.parseEther('0.04') });
+      .mint(3, { value: ethers.utils.parseEther('0.12') });
 
-    await expect(tx).to.be.revertedWith('Invalid amount');
+    await expect(tx).to.be.revertedWith('InvalidAmount');
     expect(await contract.totalSupply()).to.equal(0);
   });
 
@@ -63,7 +63,7 @@ describe('ProbablyNothing', function () {
       .connect(buyer)
       .mint(1, { value: ethers.utils.parseEther('0.01') });
 
-      expect(tx).to.be.revertedWith('Invalid value');
+      expect(tx).to.be.revertedWith('InvalidValue');
       expect(await contract.totalSupply()).to.equal(0);
   });
 
@@ -77,7 +77,7 @@ describe('ProbablyNothing', function () {
       .connect(buyer)
       .mint(1, { value: ethers.utils.parseEther('0.04') });
 
-    await expect(tx).to.be.revertedWith('Exceeds max supply');
+    await expect(tx).to.be.revertedWith('MaxSupplyExceeded');
     expect(await contract.totalSupply()).to.equal(2);
   });
 
@@ -116,6 +116,6 @@ describe('ProbablyNothing', function () {
   it('does not allow setting the baseURI more than once', async () => {
       await contract.connect(deployer).setBaseURI('something');
       const tx = contract.connect(deployer).setBaseURI('something-else');
-      await expect(tx).to.be.revertedWith('Already set');
+      await expect(tx).to.be.revertedWith('BaseUriAlreadySet');
   });
 });
