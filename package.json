@@ -2,9 +2,11 @@
   "name": "wgmi",
   "version": "0.0.1",
   "main": "index.js",
-  "license" : "MIT",
+  "license": "MIT",
   "scripts": {
-    "lint": "solhint 'contracts/**/*.sol'",
+    "tslint": "eslint **/*.ts",
+    "solint": "solhint 'contracts/**/*.sol'",
+    "lint": "yarn solint && yarn tslint",
     "compile": "npx hardhat compile",
     "test:hardhat": "npx hardhat test",
     "test:cov": "npx hardhat coverage",
@@ -16,7 +18,17 @@
     "@nomiclabs/hardhat-etherscan": "^2.1.7",
     "@nomiclabs/hardhat-waffle": "^2.0.0",
     "@openzeppelin/contracts": "^4.3.2",
+    "@types/chai": "^4.3.0",
+    "@types/mocha": "^9.0.0",
+    "@types/node": "^17.0.0",
+    "@typescript-eslint/eslint-plugin": "^5.7.0",
+    "@typescript-eslint/parser": "^5.7.0",
     "chai": "^4.2.0",
+    "eslint": "^7.32.0",
+    "eslint-config-standard": "^16.0.3",
+    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^5.2.0",
     "ethereum-waffle": "^3.0.0",
     "ethers": "^5.0.0",
     "hardhat": "^2.6.4",
@@ -24,6 +36,8 @@
     "hardhat-gas-reporter": "^1.0.4",
     "hardhat-tracer": "^1.0.0-alpha.6",
     "solhint": "^3.3.6",
-    "solidity-coverage": "^0.7.17"
+    "solidity-coverage": "^0.7.17",
+    "ts-node": "^10.4.0",
+    "typescript": "^4.5.4"
   }
 }

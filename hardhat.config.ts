@@ -1,12 +1,14 @@
-require('@nomiclabs/hardhat-waffle');
-require('@nomiclabs/hardhat-ethers');
-require('@nomiclabs/hardhat-etherscan');
-require('hardhat-gas-reporter');
-require('solidity-coverage');
-require('hardhat-deploy');
-require('hardhat-tracer');
+import '@nomiclabs/hardhat-ethers';
+import '@nomiclabs/hardhat-etherscan';
+import '@nomiclabs/hardhat-waffle';
+import 'hardhat-deploy';
+import 'hardhat-gas-reporter';
+import 'hardhat-tracer';
+import 'solidity-coverage';
 
-module.exports = {
+import { HardhatUserConfig } from 'hardhat/config';
+
+const config: HardhatUserConfig = {
   defaultNetwork: 'hardhat',
   networks: {
     hardhat: { chainId: 1337 },
@@ -22,7 +24,7 @@ module.exports = {
   },
   gasReporter: {
     currency: 'USD',
-    gasPrice: '100',
+    gasPrice: 77,
     coinmarketcap: process.env.CMC_KEY
   },
   namedAccounts: {
@@ -31,3 +33,5 @@ module.exports = {
     }
   }
 };
+
+export default config;
