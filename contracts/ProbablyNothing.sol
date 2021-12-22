@@ -60,14 +60,14 @@ contract ProbablyNothing is ERC721, Ownable {
 
     /// @dev Set the provenance hash for the collection
     /// @param _provenance string value of hashed assets
-    function setProvenance(string memory _provenance) public onlyOwner {
+    function setProvenance(string calldata _provenance) public onlyOwner {
         if (bytes(provenance).length > 0) revert ProvenanceAlreadySet();
         provenance = _provenance;
     }
 
     /// @dev One-time set base URI of token
     /// @param uri string value of base uri
-    function setBaseURI(string memory uri) public onlyOwner {
+    function setBaseURI(string calldata uri) public onlyOwner {
         if (bytes(baseURI).length > 1) revert BaseUriAlreadySet();
         baseURI = uri;
     }
