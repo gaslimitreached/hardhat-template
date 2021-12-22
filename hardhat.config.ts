@@ -14,7 +14,7 @@ const config: HardhatUserConfig = {
     hardhat: { chainId: 1337 },
   },
   solidity: {
-    version: '0.8.10',
+    version: '0.8.9',
     settings: {
       optimizer: {
         enabled: true,

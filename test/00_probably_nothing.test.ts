@@ -112,7 +112,7 @@ describe('ProbablyNothing', function () {
 
     const uri = 'https://example.com'
     await contract.connect(deployer).setBaseURI(uri)
-    expect(await contract.tokenURI(1)).to.include(uri)
+    expect(await contract.tokenURI(0)).to.include(uri)
   })
 
   it('does not allow setting the baseURI more than once', async () => {

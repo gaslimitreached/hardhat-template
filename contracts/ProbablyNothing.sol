@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.9;
+pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
@@ -20,6 +20,8 @@ error ProvenanceAlreadySet();
 
 /// @dev This is an example ERC721 contract
 contract ProbablyNothing is ERC721, Ownable {
+    event SupplyIncreased(uint256 to);
+
     using Address for address;
 
     string public provenance;
@@ -39,35 +41,38 @@ contract ProbablyNothing is ERC721, Ownable {
     }
 
     /// @dev releases the balance of the contract to the owner
-    function release() public onlyOwner {
+    function release() external onlyOwner {
         uint256 balance = address(this).balance;
         payable(owner()).transfer(balance);
     }
 
     /// @dev Mint a token
     /// @param num number of tokens to mint
-    function mint(uint256 num) public payable {
+    function mint(uint256 num) external payable {
         if (bytes(provenance).length == 0) revert ProvenanceNotSet();
         if (num > 2 || num < 1) revert InvalidAmount();
         if (price * num != msg.value) revert InvalidValue();
         if (supply + num > max) revert MaxSupplyExceeded();
 
-        for (uint256 i; i < num; i++) {
-            supply++;
-            _safeMint(msg.sender, supply);
+	uint256 previous = supply;
+	supply += num;
+        for (uint256 i = 0; i < num; i++) {
+            _safeMint(msg.sender, previous + i);
         }
+	delete previous;
+	emit SupplyIncreased(supply);
     }
 
     /// @dev Set the provenance hash for the collection
-    /// @param _provenance string value of hashed assets
-    function setProvenance(string calldata _provenance) public onlyOwner {
+    /// @param hash string value of hashed assets
+    function setProvenance(string calldata hash) external onlyOwner {
         if (bytes(provenance).length > 0) revert ProvenanceAlreadySet();
-        provenance = _provenance;
+        provenance = hash;
     }
 
     /// @dev One-time set base URI of token
     /// @param uri string value of base uri
-    function setBaseURI(string calldata uri) public onlyOwner {
+    function setBaseURI(string calldata uri) external onlyOwner {
         if (bytes(baseURI).length > 1) revert BaseUriAlreadySet();
         baseURI = uri;
     }
@@ -85,7 +90,7 @@ contract ProbablyNothing is ERC721, Ownable {
         return string(abi.encodePacked(super.tokenURI(tokenId), ".json"));
     }
 
-    function totalSupply() public view returns (uint256) {
+    function totalSupply() external view returns (uint256) {
         return supply;
     }
 }
