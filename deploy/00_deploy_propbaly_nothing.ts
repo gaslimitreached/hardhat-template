@@ -1,7 +1,7 @@
 // deploy/00_deploy_probably_nothing.ts
 import * as ethers from 'ethers'
 
-module.exports = async ({ getNamedAccounts, deployments }) => {
+module.exports = async ({ getNamedAccounts, deployments }: any) => {
   const { deploy } = deployments
   const { deployer } = await getNamedAccounts()
 
