@@ -1,4 +1,4 @@
-name: static-analysis
+name: contract-summary
 
 on: [push, pull_request]
 
@@ -19,4 +19,4 @@ jobs:
 
       - run: pip install slither-analyzer
 
-      - run: slither . --print contract-summary
+      - run: slither . --print contract-summary --exclude-dependencies
