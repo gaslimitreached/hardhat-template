@@ -1,0 +1,22 @@
+name: static-analysis 
+
+on: [push, pull_request]
+
+jobs:
+  static-analysis:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Node
+        uses: actions/setup-node@v2
+      - run: yarn
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+      - run: pip install slither-analyzer
+
+      - name: Analyze
+        run: slither .
