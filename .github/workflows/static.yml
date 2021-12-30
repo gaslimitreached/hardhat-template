@@ -19,11 +19,10 @@ jobs:
 
       - run: pip install slither-analyzer
 
-      - name: Analyze
-        run: slither . --print contract-summary
-        run: slither . --print human-summary --hardhat-ignore-compile
-        run: slither . --print inheritance-graph,call-graph,cfg --hardhat-ignore-compile
-        run: slither . --exclude-dependencies --hardhat-ignore-compile
+      - run: slither . --print contract-summary
+      - run: slither . --print human-summary --hardhat-ignore-compile
+      - run: slither . --print inheritance-graph,call-graph,cfg --hardhat-ignore-compile
+      - run: slither . --exclude-dependencies --hardhat-ignore-compile
 
       - name: Setup Graphviz
         uses: ts-graphviz/setup-graphviz@v1
@@ -32,13 +31,11 @@ jobs:
       - run: mv .-*.dot ./analysis
       - run: mv *.dot ./analysis
 
-      - name: Convert to PDF
-        run: for file in ./analysis/*.dot; do dot -Tpdf -O -ofile "./analysis/$file"; done
-        run: for file in ./analysis/.-*.dot; do dot -Tpdf -O -ofile "./analysis/$file"; done
+      - run: for file in ./analysis/*.dot; do dot -Tpdf -O -ofile "./analysis/$file"; done
+      - run: for file in ./analysis/.-*.dot; do dot -Tpdf -O -ofile "./analysis/$file"; done
 
-      - name: Cleanup
-        run: rm analysis/*.dot
-        run: rm analysis/.-*.dot
+      - run: rm analysis/*.dot
+      - run: rm analysis/.-*.dot
 
       - name: pull-request
         uses: repo-sync/pull-request@v2
