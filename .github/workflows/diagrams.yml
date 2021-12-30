@@ -19,9 +19,7 @@ jobs:
 
       - run: pip install slither-analyzer
 
-      - run: slither . --print contract-summary
-      - run: slither . --print human-summary --hardhat-ignore-compile
-      - run: slither . --print inheritance-graph,call-graph,cfg --hardhat-ignore-compile
+      - run: slither . --print inheritance-graph,call-graph,cfg
 
       - name: Setup Graphviz
         uses: ts-graphviz/setup-graphviz@v1
@@ -30,8 +28,8 @@ jobs:
       - run: mv .-*.dot ./analysis
       - run: mv *.dot ./analysis
 
-      - run: for file in ./analysis/*.dot; do dot -Tpdf -O -ofile "./analysis/$file"; done
-      - run: for file in ./analysis/.-*.dot; do dot -Tpdf -O -ofile "./analysis/$file"; done
+      - run: for file in ./analysis/*.dot; do dot -Tpdf -O -ofile "$file"; done
+      - run: for file in ./analysis/.-*.dot; do dot -Tpdf -O -ofile "$file"; done
 
       - run: rm analysis/*.dot
       - run: rm analysis/.-*.dot

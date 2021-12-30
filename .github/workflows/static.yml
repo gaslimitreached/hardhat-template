@@ -19,4 +19,6 @@ jobs:
 
       - run: pip install slither-analyzer
 
-      - run: slither . --exclude-dependencies
+      - run: slither . --print contract-summary
+      - run: slither . --print human-summary --hardhat-ignore-compile
+      - run: slither . --exclude-dependencies --hardhat-ignore-compile
