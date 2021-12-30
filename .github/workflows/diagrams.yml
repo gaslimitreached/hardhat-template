@@ -1,0 +1,45 @@
+name: diagrams
+
+on: [push, pull_request]
+
+jobs:
+  static-analysis:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Node
+        uses: actions/setup-node@v2
+      - run: yarn
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - run: pip install slither-analyzer
+
+      - run: slither . --print contract-summary
+      - run: slither . --print human-summary --hardhat-ignore-compile
+      - run: slither . --print inheritance-graph,call-graph,cfg --hardhat-ignore-compile
+
+      - name: Setup Graphviz
+        uses: ts-graphviz/setup-graphviz@v1
+
+      - run: mkdir analysis
+      - run: mv .-*.dot ./analysis
+      - run: mv *.dot ./analysis
+
+      - run: for file in ./analysis/*.dot; do dot -Tpdf -O -ofile "./analysis/$file"; done
+      - run: for file in ./analysis/.-*.dot; do dot -Tpdf -O -ofile "./analysis/$file"; done
+
+      - run: rm analysis/*.dot
+      - run: rm analysis/.-*.dot
+
+      - name: pull-request
+        uses: repo-sync/pull-request@v2
+        with:
+          destination_branch: "analysis"
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          pr_label: "feature, automated analysis pr"
+          pr_title: "[Analysis]"
