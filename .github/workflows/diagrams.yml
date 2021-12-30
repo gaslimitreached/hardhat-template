@@ -34,6 +34,12 @@ jobs:
       - run: rm analysis/*.dot
       - run: rm analysis/.-*.dot
 
+      - uses: peterjgrainger/action-create-branch@v2.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          branch: "analysis"
+
       - name: pull-request
         uses: repo-sync/pull-request@v2
         with:
