@@ -1,4 +1,4 @@
-name: static-analysis 
+name: static-analysis
 
 on: [push, pull_request]
 
@@ -22,7 +22,7 @@ jobs:
       - name: Analyze
         run: slither . --print contract-summary
         run: slither . --print human-summary --hardhat-ignore-compile
-        run: slither . --print inheritance-graph,call-graph,cvg --hardhat-ignore-compile
+        run: slither . --print inheritance-graph,call-graph,cfg --hardhat-ignore-compile
         run: slither . --exclude-dependencies --hardhat-ignore-compile
 
       - name: Setup Graphviz
