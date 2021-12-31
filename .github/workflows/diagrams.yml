@@ -38,20 +38,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          branch: "analysis"
+          branch: analysis
 
       - name: Commit changes
         uses: EndBug/add-and-commit@v7
         with:
+          branch: analysis
           author_name: github action
           author_email: actions@github.com
           message: 'Automated analysis'
           add: '.'
-
-      - name: pull-request
-        uses: repo-sync/pull-request@v2
-        with:
-          destination_branch: "analysis"
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          pr_label: "feature, automated analysis pr"
-          pr_title: "[Analysis]"
